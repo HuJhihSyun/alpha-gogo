@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" width="360" height="220">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#B8E0FF"/>
+      <stop offset="55%" style="stop-color:#D4F0A8"/>
+      <stop offset="100%" style="stop-color:#F0FAE0"/>
+    </linearGradient>
+    <linearGradient id="sunGrad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:#FFE066"/>
+      <stop offset="100%" style="stop-color:#FFB800"/>
+    </linearGradient>
+    <filter id="soft">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="txtShadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#4A8B30" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Sky background -->
+  <rect width="360" height="220" rx="28" fill="url(#sky)"/>
+
+  <!-- Sun -->
+  <circle cx="52" cy="48" r="26" fill="#FFE066" opacity="0.9"/>
+  <circle cx="52" cy="48" r="18" fill="#FFCA28"/>
+  <!-- Sun rays -->
+  <g stroke="#FFE066" stroke-width="3" stroke-linecap="round" opacity="0.7">
+    <line x1="52" y1="14" x2="52" y2="8"/>
+    <line x1="52" y1="82" x2="52" y2="88"/>
+    <line x1="18" y1="48" x2="12" y2="48"/>
+    <line x1="86" y1="48" x2="92" y2="48"/>
+    <line x1="28" y1="24" x2="23" y2="19"/>
+    <line x1="76" y1="72" x2="81" y2="77"/>
+    <line x1="76" y1="24" x2="81" y2="19"/>
+    <line x1="28" y1="72" x2="23" y2="77"/>
+  </g>
+
+  <!-- Clouds -->
+  <g opacity="0.85">
+    <ellipse cx="240" cy="38" rx="36" ry="16" fill="white"/>
+    <ellipse cx="220" cy="42" rx="22" ry="14" fill="white"/>
+    <ellipse cx="264" cy="42" rx="20" ry="12" fill="white"/>
+  </g>
+  <g opacity="0.7">
+    <ellipse cx="110" cy="28" rx="22" ry="10" fill="white"/>
+    <ellipse cx="96" cy="32" rx="14" ry="9" fill="white"/>
+    <ellipse cx="126" cy="31" rx="13" ry="8" fill="white"/>
+  </g>
+
+  <!-- Ground / grass strip -->
+  <ellipse cx="180" cy="215" rx="195" ry="40" fill="#8BC34A" opacity="0.35"/>
+  <ellipse cx="180" cy="218" rx="200" ry="38" fill="#A5D65A" opacity="0.3"/>
+
+  <!-- Small flowers left -->
+  <g transform="translate(28,152)">
+    <circle cx="0" cy="0" r="6" fill="#FF8A65"/>
+    <circle cx="0" cy="-9" r="5" fill="#FF8A65"/>
+    <circle cx="8" cy="-4" r="5" fill="#FF8A65"/>
+    <circle cx="-8" cy="-4" r="5" fill="#FF8A65"/>
+    <circle cx="0" cy="0" r="4" fill="#FFE066"/>
+    <rect x="-1.5" y="6" width="3" height="14" rx="1.5" fill="#6AB04C"/>
+  </g>
+  <!-- Small flowers right -->
+  <g transform="translate(318,158)">
+    <circle cx="0" cy="0" r="5" fill="#CE93D8"/>
+    <circle cx="0" cy="-8" r="5" fill="#CE93D8"/>
+    <circle cx="7" cy="-3" r="5" fill="#CE93D8"/>
+    <circle cx="-7" cy="-3" r="5" fill="#CE93D8"/>
+    <circle cx="0" cy="0" r="3.5" fill="#FFE066"/>
+    <rect x="-1.5" y="5" width="3" height="12" rx="1.5" fill="#6AB04C"/>
+  </g>
+  <!-- Mid flower -->
+  <g transform="translate(170,165)">
+    <circle cx="0" cy="0" r="5.5" fill="#80DEEA"/>
+    <circle cx="0" cy="-8" r="5" fill="#80DEEA"/>
+    <circle cx="7" cy="-3" r="5" fill="#80DEEA"/>
+    <circle cx="-7" cy="-3" r="5" fill="#80DEEA"/>
+    <circle cx="0" cy="0" r="3.5" fill="#FFE066"/>
+    <rect x="-1.5" y="5" width="3" height="10" rx="1.5" fill="#6AB04C"/>
+  </g>
+
+  <!-- ALPHA text -->
+  <text x="180" y="116"
+        text-anchor="middle"
+        font-family="'Arial Rounded MT Bold','Hiragino Maru Gothic Pro',Arial,sans-serif"
+        font-size="62" font-weight="900"
+        fill="#4A8B30"
+        filter="url(#txtShadow)"
+        letter-spacing="3">ALPHA</text>
+
+  <!-- GO GO text -->
+  <text x="180" y="155"
+        text-anchor="middle"
+        font-family="'Arial Rounded MT Bold','Hiragino Maru Gothic Pro',Arial,sans-serif"
+        font-size="40" font-weight="800"
+        fill="#6AB04C"
+        letter-spacing="10">GO GO</text>
+
+  <!-- Subtitle dots decoration -->
+  <circle cx="120" cy="168" r="3" fill="#A5D65A" opacity="0.7"/>
+  <circle cx="180" cy="172" r="3.5" fill="#A5D65A" opacity="0.7"/>
+  <circle cx="240" cy="168" r="3" fill="#A5D65A" opacity="0.7"/>
+</svg>

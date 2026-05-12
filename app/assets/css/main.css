@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+/* ── Pikmin Bloom Design Tokens ─────────────────────── */
+@theme {
+  /* Colors */
+  --color-pk-green:        #6AB04C;
+  --color-pk-green-dark:   #4A8B30;
+  --color-pk-green-light:  #EBF8DD;
+  --color-pk-green-xlight: #F4FCF0;
+  --color-pk-yellow:       #F9CA24;
+  --color-pk-yellow-light: #FFF9E0;
+  --color-pk-brown:        #3D2B1F;
+  --color-pk-brown-2:      #7A5F4E;
+  --color-pk-brown-light:  #C4A882;
+  --color-pk-cream:        #FAFAF5;
+  --color-pk-cream-2:      #F5F0E8;
+  --color-pk-border:       #EDE8E2;
+
+  /* Font */
+  --font-pk: "Hiragino Maru Gothic Pro", "M PLUS Rounded 1c", "Segoe UI", system-ui, sans-serif;
+
+  /* Shadows */
+  --shadow-pk-card:    0 4px 20px rgba(74,139,48,.10), 0 1px 4px rgba(61,43,31,.06);
+  --shadow-pk-card-sm: 0 4px 18px rgba(74,139,48,.09), 0 1px 4px rgba(61,43,31,.05);
+  --shadow-pk-card-lg: 0 6px 28px rgba(74,139,48,.12), 0 1px 4px rgba(61,43,31,.06);
+  --shadow-pk-nav:     0 4px 24px rgba(74,139,48,.14), 0 1px 6px rgba(61,43,31,.08), 0 0 0 1px rgba(237,232,226,.8);
+  --shadow-pk-btn:     0 6px 20px rgba(106,176,76,.35), 0 2px 6px rgba(0,0,0,.08);
+  --shadow-pk-avatar:  0 6px 20px rgba(106,176,76,.35);
+
+  /* Border Radius */
+  --radius-pk-sm: 14px;
+  --radius-pk:    20px;
+  --radius-pk-lg: 28px;
+}
+
+/* ── Global Reset ───────────────────────────────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { height: 100%; }
+  /* Remove number input spinners */
+  input[type="number"] { -moz-appearance: textfield; }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+}
+
+/* ── Custom Utilities ───────────────────────────────── */
+@utility tap-transparent {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Leaflet overrides ──────────────────────────────── */
+@import 'leaflet/dist/leaflet.css';
