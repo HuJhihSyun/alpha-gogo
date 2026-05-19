@@ -7,7 +7,7 @@
   import imgGalaxy from '~/assets/images/galaxy.png'
   import imgSS from '~/assets/images/ss.png'
   import imgYouth from '~/assets/images/youth.png'
-  import imgPastor from '~/assets/images/pastor.PNG'
+  import imgPastor from '~/assets/images/pastor.png'
 
   const deptImageMap: Record<string, string> = {
     長年部: imgElder,
@@ -99,7 +99,7 @@
     <section class="">
       <!-- 有圖片 -->
       <div v-if="deptImage" class="relative">
-        <img :src="deptImage" :alt="deptLabel" class="w-full h-30 object-cover block" />
+        <img :src="deptImage" :alt="deptLabel" class="w-full h-40 object-cover block" />
       </div>
 
       <!-- 無圖片 Empty -->

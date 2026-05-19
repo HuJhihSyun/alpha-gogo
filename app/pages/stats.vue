@@ -3,11 +3,27 @@ useHead({ title: '統計' })
 
 const PRAY_GOAL = 60
 
+const { $api } = useNuxtApp()
+
 interface SchoolProgress { prayMinutes: number; spreadCount: number }
 const raw = ref<Record<string, SchoolProgress>>({})
-onMounted(() => {
-  const stored = localStorage.getItem('records_progress')
-  if (stored) { try { raw.value = JSON.parse(stored) } catch {} }
+onMounted(async () => {
+  const { data: progressDataList } = await $api.GET('/missions/progress', {
+    params: {
+      header: { 'X-Member-Id': useLocalStorage('userUuid', "").value }
+    }
+  })
+
+  if (!progressDataList)
+    return
+
+  for (const p of progressDataList) {
+    if (p.campus)
+      raw.value[p.campus] = {
+        prayMinutes: p.totalPrayerMinutes ?? 0, 
+        spreadCount: p.totalEvangelismCount ?? 0
+      }
+  }
 })
 
 const schools = ['台大', '師大', '台科大'] as const

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useHead({ title: '我的' })
+useHead({ title: '帳號' })
 
 interface UserProfile { department: string; name: string; gender: string }
 const user = ref<UserProfile | null>(null)
@@ -12,8 +12,6 @@ const firstChar = computed(() => user.value?.name?.charAt(0) ?? '？')
 
 function clearAndRelogin() {
   localStorage.removeItem('user_profile')
-  localStorage.removeItem('records_progress')
-  sessionStorage.removeItem('session_active')
   navigateTo('/login')
 }
 </script>
@@ -27,7 +25,7 @@ function clearAndRelogin() {
                    text-[0.75rem] font-bold px-3 py-[5px] rounded-full w-fit">
         <span>🌱</span> 我的帳號
       </span>
-      <h1 class="text-[1.7rem] font-black text-pk-brown leading-tight">我的</h1>
+      <h1 class="text-[1.7rem] font-black text-pk-brown leading-tight">我的帳號</h1>
     </div>
 
     <!-- 個人資料卡 -->

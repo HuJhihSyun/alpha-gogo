@@ -1,6 +1,8 @@
 <script setup lang="ts">
 useHead({ title: '獎勵' })
 
+const { $api } = useNuxtApp()
+
 import imgNtu   from '~/assets/images/ntu1.jpg'
 import imgNtnu  from '~/assets/images/ntnu1.jpg'
 import imgNtust from '~/assets/images/ntust1.jpeg'
@@ -17,9 +19,23 @@ type SchoolKey = '台大' | '師大' | '台科大'
 
 interface Progress { prayMinutes: number; spreadCount: number }
 const progress = ref<Record<string, Progress>>({})
-onMounted(() => {
-  const stored = localStorage.getItem('records_progress')
-  if (stored) { try { progress.value = JSON.parse(stored) } catch {} }
+onMounted(async () => {
+  const { data: progressDataList } = await $api.GET('/missions/progress', {
+    params: {
+      header: { 'X-Member-Id': useLocalStorage('userUuid', "").value }
+    }
+  })
+
+  if (!progressDataList)
+    return
+
+  for (const p of progressDataList) {
+    if (p.campus)
+      progress.value[p.campus] = {
+        prayMinutes: p.totalPrayerMinutes ?? 0, 
+        spreadCount: p.totalEvangelismCount ?? 0
+      }
+  }
 })
 
 const get  = (k: SchoolKey) => ({ prayMinutes: progress.value[k]?.prayMinutes ?? 0, spreadCount: progress.value[k]?.spreadCount ?? 0 })

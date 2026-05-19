@@ -1,0 +1,224 @@
+openapi: 3.0.0
+info:
+  title: 2026 阿拉法節校園足跡傳道活動 API
+  description: 專為教會 2026 阿拉法節皮克敏明信片活動網頁設計的後端 API 文件。採用無密碼登入機制，以 UUID 作為成員識別憑證。
+  version: 1.0.0
+servers:
+  - url: https://media.lawch.org/line/api/v1
+    description: 教會網站server環境
+
+paths:
+  /auth/login:
+    post:
+      summary: 成員登入與註冊（無密碼機制）
+      description: 依據部門、名字、性別進行登入。若資料庫中無此組合，系統會自動調用 CodeUtils 生成全新 UUID 註冊新成員，並回傳該 UUID；若已存在，則直接回傳舊成員的 UUID。前端收到後應存入 LocalStorage。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - dept
+                - name
+                - gender
+              properties:
+                dept:
+                  type: string
+                  example: "青年部"
+                  description: "使用者所屬的教會部門"
+                name:
+                  type: string
+                  example: "阿法哥"
+                  description: "使用者名字"
+                gender:
+                  type: string
+                  example: "男"
+                  description: "使用者性別"
+      responses:
+        '200':
+          description: 登入或註冊成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: "e45a2c3b-8912-4d3e-a123-426614174000"
+                    description: "後端核發的唯一識別憑證 (UUID)，前端後續請求皆需攜帶"
+                  name:
+                    type: string
+                    example: "阿法哥"
+                  dept:
+                    type: string
+                    example: "青年部"
+        '400':
+          description: 請求參數缺失
+
+  /missions/record:
+    post:
+      summary: 上傳單次任務紀錄（增量輸入）
+      description: 使用者每次做完條件後填寫的數據。後端採流水帳設計，收到後會直接存入新 Row，不會覆蓋舊有數據。
+      parameters:
+        - $ref: '#/components/parameters/X-Member-Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - campus
+              properties:
+                campus:
+                  type: string
+                  enum: ["台大", "師大", "台科大"]
+                  example: "台大"
+                  description: "當下登記的校園名稱（請前後端字串嚴格統一）"
+                prayerMinutes:
+                  type: integer
+                  example: 20
+                  description: "本次新增的禱告時間（分鐘）。若未填則預設為 0"
+                evangelismCount:
+                  type: integer
+                  example: 1
+                  description: "本次新增的傳道/生命管理次數（次）。若未填則預設為 0"
+                realization:
+                  type: string
+                  example: "下午跟學弟分享話語，順利完成傳道！"
+                  description: "今日體會/見證/感動心聲"
+      responses:
+        '200':
+          description: 紀錄儲存成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "紀錄已儲存"
+        '400':
+          description: 業務邏輯阻擋（例如：5/20活動尚未開始或使用者 ID 錯誤）
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "活動尚未正式開始，統一開放登錄時間為 5/20"
+
+  /missions/progress:
+    get:
+      summary: 查詢個人各校園的總累積進度
+      description: 前端用來計算「個人進度條比例」以及「判斷是否解鎖兩款明信片（禱告>=30分、傳道>=1次）」的核心 API。
+      parameters:
+        - $ref: '#/components/parameters/X-Member-Id'
+      responses:
+        '200':
+          description: 成功取得個人累積數據
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    campus:
+                      type: string
+                      example: "台大"
+                    totalPrayerMinutes:
+                      type: integer
+                      example: 35
+                      description: "該校園歷次上傳的禱告分鐘數總和"
+                    totalEvangelismCount:
+                      type: integer
+                      example: 1
+                      description: "該校園歷次上傳的傳道次數總和"
+
+  /missions/realizations:
+    get:
+      summary: 一次倒出個人所有的歷史體會紀錄
+      description: 用於「歷史回顧」分頁。回傳使用者寫過的所有體會，依時間由新到舊排序，內含學校標籤與精確時間。
+      parameters:
+        - $ref: '#/components/parameters/X-Member-Id'
+      responses:
+        '200':
+          description: 成功取得歷史體會清單
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    campus:
+                      type: string
+                      example: "台大"
+                      description: "該段體會所屬的學校"
+                    realization:
+                      type: string
+                      example: "早晨在椰林大道禱告，很有感動！"
+                    createdAt:
+                      type: string
+                      format: date-time
+                      example: "2026-05-17T17:27:00Z"
+                      description: "後端標準 LocalDateTime 格式，請前端自行依需求排版顯示"
+
+  /missions/stats/global:
+    get:
+      summary: 查詢全體參與狀況大盤統計（即時更新）
+      description: 供應首頁或統計區域的大圖表數據。包含實際參與人數、總傳道次數、全教會總解鎖明信片張數，以及三間學校各自的總禱告累計時間。本 API 不需驗證 Header。
+      responses:
+        '200':
+          description: 成功取得全局統計數據
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalParticipants:
+                    type: integer
+                    example: 145
+                    description: "實際有送出過至少一次任務紀錄的不重複成員總人數"
+                  totalEvangelism:
+                    type: integer
+                    example: 88
+                    description: "全體成員累計的總傳道次數"
+                  totalPostcardsUnlocked:
+                    type: integer
+                    example: 210
+                    description: "全體成員目前總共獲得的數位明信片總張數（禱告、傳道分開計算）"
+                  ntuTotalPrayer:
+                    type: integer
+                    example: 2450
+                    description: "台大目前全體累計禱告總分鐘數（目標為 40 小時 = 2400 分鐘）"
+                  ntnuTotalPrayer:
+                    type: integer
+                    example: 1800
+                    description: "師大目前全體累計禱告總分鐘數"
+                  ntustTotalPrayer:
+                    type: integer
+                    example: 950
+                    description: "台科大目前全體累計禱告總分鐘數"
+
+components:
+  parameters:
+    X-Member-Id:
+      name: X-Member-Id
+      in: header
+      required: true
+      description: 儲存在前端 LocalStorage 的使用者 UUID 憑證
+      schema:
+        type: string
+        format: uuid
+        example: "e45a2c3b-8912-4d3e-a123-426614174000"

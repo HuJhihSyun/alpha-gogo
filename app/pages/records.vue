@@ -1,6 +1,8 @@
 <script setup lang="ts">
   useHead({ title: '紀錄' })
 
+  const { $api } = useNuxtApp()
+
   const tabs = ['台大', '師大', '台科大'] as const
   type Tab = (typeof tabs)[number]
 
@@ -53,13 +55,28 @@
     submitting.value = true
     await new Promise((r) => setTimeout(r, 800))
 
-    const stored = JSON.parse(localStorage.getItem('records_progress') || '{}')
-    const school = activeTab.value
-    stored[school] = {
-      prayMinutes: (stored[school]?.prayMinutes ?? 0) + (f.prayMinutes ?? 0),
-      spreadCount: (stored[school]?.spreadCount ?? 0) + (f.spreadCount ?? 0)
+    const { data: { success } = {} } = await $api.POST('/missions/record', {
+      params: {
+        header: {
+          'X-Member-Id': useLocalStorage('userUuid', '').value
+        }
+      }, 
+      body: {
+        campus: activeTab.value, 
+        prayerMinutes: f.prayMinutes,
+        evangelismCount: f.spreadCount, 
+        realization: f.reflection
+      }
+    })
+
+    if (!success) {
+      submitting.value = false
+      submitOk.value = false
+      submitMsg.value = '上傳失敗，請稍後再試'
+      return
     }
-    localStorage.setItem('records_progress', JSON.stringify(stored))
+
+    const school = activeTab.value
 
     submitting.value = false
     submitOk.value = true

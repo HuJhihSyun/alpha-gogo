@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  const { $api } = useNuxtApp()
+
   definePageMeta({ layout: false })
 
   interface UserProfile {
@@ -11,7 +13,7 @@
   const form = reactive<UserProfile>({ department: '', name: '', gender: '' })
   const formError = ref('')
 
-  const departments = ['長年部', '家庭局', '青年部', '大學部', '國高中部', '銀河水']
+  const departments = ['聖職者', '長年部', '家庭局', '青年部', '大學部', '國高中部', '銀河水']
   const genders = ['男', '女']
 
   onMounted(() => {
@@ -25,7 +27,6 @@
 
   function continuePlay() {
     if (!existingUser.value) return
-    sessionStorage.setItem('session_active', '1')
     navigateTo('/')
   }
   function toggleNewStart() {
@@ -33,7 +34,7 @@
     formError.value = ''
     if (!showForm.value) Object.assign(form, { department: '', name: '', gender: '' })
   }
-  function startActivity() {
+  async function startActivity() {
     formError.value = ''
     if (!form.department) {
       formError.value = '請選擇你的部門'
@@ -48,8 +49,19 @@
       return
     }
     const profile: UserProfile = { department: form.department, name: form.name.trim(), gender: form.gender }
+    const { data: { id: userUuid } = {} } = await $api.POST('/auth/login', {
+      body: {
+        dept: profile.department,
+        name: profile.name,
+        gender: profile.gender
+      }
+    })
+    if (!userUuid) {
+      formError.value = '無法建立帳號，請稍後再試'
+      return
+    }
+    localStorage.setItem('userUuid', userUuid)
     localStorage.setItem('user_profile', JSON.stringify(profile))
-    sessionStorage.setItem('session_active', '1')
     navigateTo('/')
   }
 </script>
