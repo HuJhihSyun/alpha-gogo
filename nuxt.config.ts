@@ -47,5 +47,10 @@ export default defineNuxtConfig({
         'openapi-fetch'
       ]
     }
+  },
+  nitro: {
+    prerender: {
+      autoSubfolderIndex: false
+    }
   }
 })
