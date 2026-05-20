@@ -55,7 +55,7 @@ const isEmpty = computed(() => !loading.value && !hasError.value && items.value.
     <!-- 頁首 -->
     <div class="flex flex-col gap-1 pb-1">
       <span class="inline-flex items-center gap-1.5 bg-[#FFF0F5] text-[#C0396B]
-                   text-[0.75rem] font-bold px-3 py-[5px] rounded-full w-fit">
+                   text-[0.75rem] font-bold px-3 py-1 rounded-full w-fit">
         <span>💝</span> 感動紀錄
       </span>
       <h1 class="text-[1.7rem] font-black text-pk-brown leading-tight">歷史體會回顧</h1>
@@ -65,8 +65,8 @@ const isEmpty = computed(() => !loading.value && !hasError.value && items.value.
     <!-- 載入中 -->
     <div v-if="loading" class="flex flex-col gap-3">
       <div v-for="i in 3" :key="i"
-           class="bg-white rounded-[20px] px-4 py-4 border border-pk-border shadow-pk-card-sm animate-pulse">
-        <div class="flex items-center gap-2 mb-3">
+           class="bg-white rounded-xl px-3 py-3 border border-pk-border shadow-pk-card-sm animate-pulse">
+        <div class="flex items-center gap-2 mb-1">
           <div class="w-12 h-5 rounded-full bg-pk-cream-2" />
           <div class="w-20 h-4 rounded bg-pk-cream-2 ml-auto" />
         </div>
@@ -80,11 +80,11 @@ const isEmpty = computed(() => !loading.value && !hasError.value && items.value.
       <div
         v-for="(item, idx) in items"
         :key="idx"
-        class="bg-white rounded-[20px] px-4 py-4 border border-pk-border shadow-pk-card-sm"
+        class="bg-white rounded-xl px-3 py-3 border border-pk-border shadow-pk-card-sm"
       >
-        <div class="flex items-center gap-2 mb-2.5">
+        <div class="flex items-center gap-2 mb-1">
           <span
-            class="text-[0.7rem] font-extrabold px-2.5 py-1 rounded-full flex-shrink-0"
+            class="text-[0.7rem] font-extrabold px-2.5 py-1 rounded-full shrink-0"
             :style="{ background: (schoolMeta[item.campus] ?? schoolMeta['台大']).bg, color: (schoolMeta[item.campus] ?? schoolMeta['台大']).color }"
           >
             {{ item.campus }}
@@ -93,7 +93,7 @@ const isEmpty = computed(() => !loading.value && !hasError.value && items.value.
             {{ formatDate(item.createdAt) }}
           </span>
         </div>
-        <p class="text-[0.92rem] text-pk-brown leading-relaxed">{{ item.realization }}</p>
+        <p class="text-sm text-pk-brown leading-relaxed pl-1">{{ item.realization }}</p>
       </div>
     </div>
 
