@@ -4,6 +4,9 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  app: {
+    baseURL: '/alpha-gogo/'
+  },
   modules: [
     '@vueuse/nuxt'
   ],
@@ -15,5 +18,11 @@ export default defineNuxtConfig({
   },
   vite: {
     plugins: [tailwindcss()],
-  },
+    optimizeDeps: {
+      include: [
+        'leaflet',
+        'openapi-fetch'
+      ]
+    }
+  }
 })

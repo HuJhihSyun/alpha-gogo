@@ -36,13 +36,10 @@
   async function handleSubmit() {
     submitMsg.value = ''
     const f = current.value
-    if (f.prayMinutes === null || f.prayMinutes < 0) {
-      submitMsg.value = '請填寫禱告時間（分鐘）'
-      submitOk.value = false
-      return
-    }
-    if (f.spreadCount === null || f.spreadCount < 0) {
-      submitMsg.value = '請填寫傳道管理次數'
+    const checkPrayer = f.prayMinutes && f.prayMinutes >= 0
+    const checkSpread = f.spreadCount && f.spreadCount >= 0
+    if (!checkPrayer && !checkSpread) {
+      submitMsg.value = '請填寫禱告時間（分鐘）或傳道管理次數'
       submitOk.value = false
       return
     }
@@ -63,8 +60,8 @@
       }, 
       body: {
         campus: activeTab.value, 
-        prayerMinutes: f.prayMinutes,
-        evangelismCount: f.spreadCount, 
+        prayerMinutes: f.prayMinutes ?? 0, 
+        evangelismCount: f.spreadCount ?? 0, 
         realization: f.reflection
       }
     })
