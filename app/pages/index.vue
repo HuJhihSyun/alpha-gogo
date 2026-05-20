@@ -1,4 +1,9 @@
 <script setup lang="ts">
+  useHead({
+    title: '首頁',
+    meta: [{ name: 'description', content: '查看活動地圖、追蹤你在三所校園的禱告與傳道足跡。' }]
+  })
+
   import { onMounted, ref, computed } from 'vue'
 
   import imgElder from '~/assets/images/elder.png'

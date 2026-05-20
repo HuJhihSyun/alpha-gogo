@@ -3,6 +3,11 @@
 
   definePageMeta({ layout: false })
 
+  useHead({
+    title: 'Alpha GoGo — 2026 阿拉法節校園足跡傳道活動',
+    meta: [{ name: 'description', content: '建立你的角色，開始記錄在台大、師大、台科大的禱告與傳道足跡。' }]
+  })
+
   interface UserProfile {
     department: string
     name: string

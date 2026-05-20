@@ -1,5 +1,8 @@
 <script setup lang="ts">
-useHead({ title: '獎勵' })
+useHead({
+  title: '獎勵',
+  meta: [{ name: 'description', content: '查看已解鎖的校園明信片，集滿三所大學即可完成活動。' }]
+})
 
 const { $api } = useNuxtApp()
 

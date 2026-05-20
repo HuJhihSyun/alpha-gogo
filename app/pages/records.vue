@@ -1,5 +1,8 @@
 <script setup lang="ts">
-  useHead({ title: '紀錄' })
+  useHead({
+    title: '紀錄',
+    meta: [{ name: 'description', content: '登錄各校園的禱告時間與傳道次數，累積足跡解鎖明信片。' }]
+  })
 
   const { $api } = useNuxtApp()
 

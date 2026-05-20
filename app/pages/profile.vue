@@ -1,5 +1,8 @@
 <script setup lang="ts">
-useHead({ title: '帳號' })
+useHead({
+  title: '帳號',
+  meta: [{ name: 'description', content: '查看與管理你的活動帳號資料。' }]
+})
 
 interface UserProfile { department: string; name: string; gender: string }
 const user = ref<UserProfile | null>(null)

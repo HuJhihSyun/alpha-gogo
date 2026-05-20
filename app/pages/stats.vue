@@ -1,40 +1,47 @@
 <script setup lang="ts">
-useHead({ title: '統計' })
+useHead({
+  title: '統計',
+  meta: [{ name: 'description', content: '即時查看全體參與者的禱告時間、傳道次數與明信片解鎖進度。' }]
+})
 
 const PRAY_GOAL = 60
 
 const { $api } = useNuxtApp()
 
-interface SchoolProgress { prayMinutes: number; spreadCount: number }
-const raw = ref<Record<string, SchoolProgress>>({})
+interface GlobalStats {
+  totalParticipants: number
+  totalEvangelism: number
+  totalPostcardsUnlocked: number
+  ntuTotalPrayer: number
+  ntnuTotalPrayer: number
+  ntustTotalPrayer: number
+}
+
+const stats = ref<GlobalStats>({
+  totalParticipants: 0,
+  totalEvangelism: 0,
+  totalPostcardsUnlocked: 0,
+  ntuTotalPrayer: 0,
+  ntnuTotalPrayer: 0,
+  ntustTotalPrayer: 0,
+})
+
 onMounted(async () => {
-  const { data: progressDataList } = await $api.GET('/missions/progress', {
-    params: {
-      header: { 'X-Member-Id': useLocalStorage('userUuid', "").value }
-    }
-  })
-
-  if (!progressDataList)
-    return
-
-  for (const p of progressDataList) {
-    if (p.campus)
-      raw.value[p.campus] = {
-        prayMinutes: p.totalPrayerMinutes ?? 0, 
-        spreadCount: p.totalEvangelismCount ?? 0
-      }
-  }
+  const { data } = await $api.GET('/missions/stats/global', {})
+  if (data) stats.value = data
 })
 
 const schools = ['台大', '師大', '台科大'] as const
 type School = typeof schools[number]
 
-const pray   = (s: School) => raw.value[s]?.prayMinutes ?? 0
-const spread = (s: School) => raw.value[s]?.spreadCount ?? 0
-const pct    = (s: School) => Math.min(100, Math.round((pray(s) / PRAY_GOAL) * 100))
+const prayMap: Record<School, keyof GlobalStats> = {
+  台大:  'ntuTotalPrayer',
+  師大:  'ntnuTotalPrayer',
+  台科大: 'ntustTotalPrayer',
+}
 
-const totalSpread   = computed(() => schools.reduce((a, s) => a + spread(s), 0))
-const unlockedCount = computed(() => schools.filter(s => pray(s) >= PRAY_GOAL && spread(s) >= 3).length)
+const pray = (s: School) => stats.value[prayMap[s]] as number
+const pct  = (s: School) => Math.min(100, Math.round((pray(s) / PRAY_GOAL) * 100))
 
 const meta: Record<School, { color: string; bg: string; bar: string }> = {
   台大:  { color: '#2E6BE6', bg: '#EAF1FF', bar: 'linear-gradient(90deg,#5B8FF9,#2E6BE6)' },
@@ -61,13 +68,13 @@ const meta: Record<School, { color: string; bg: string; bar: string }> = {
       <div class="bg-white rounded-[22px] px-3.5 py-5 flex flex-col items-center gap-2
                   shadow-pk-card-sm border border-pk-border text-center">
         <div class="w-13 h-13 rounded-[16px] bg-[#EAF1FF] flex items-center justify-center text-[1.5rem]">👥</div>
-        <div class="text-[2.2rem] font-black text-pk-brown leading-none">—</div>
+        <div class="text-[2.2rem] font-black text-pk-brown leading-none">{{ stats.totalParticipants }}</div>
         <div class="text-[0.75rem] font-semibold text-pk-brown-2">參與人數</div>
       </div>
       <div class="bg-white rounded-[22px] px-3.5 py-5 flex flex-col items-center gap-2
                   shadow-pk-card-sm border border-pk-border text-center">
         <div class="w-13 h-13 rounded-[16px] bg-pk-yellow-light flex items-center justify-center text-[1.5rem]">🏅</div>
-        <div class="text-[2.2rem] font-black text-pk-green-dark leading-none">{{ unlockedCount }}</div>
+        <div class="text-[2.2rem] font-black text-pk-green-dark leading-none">{{ stats.totalPostcardsUnlocked }}</div>
         <div class="text-[0.75rem] font-semibold text-pk-brown-2">達標明信片</div>
       </div>
     </div>
@@ -105,14 +112,7 @@ const meta: Record<School, { color: string; bg: string; bar: string }> = {
           <p class="text-[0.72rem] text-pk-brown-2 mt-0.5">三所學校累積傳道總計</p>
         </div>
         <div class="text-[2.2rem] font-black text-pk-green-dark leading-none flex-shrink-0">
-          {{ totalSpread }}<span class="text-[0.8rem] font-semibold text-pk-brown-2 ml-0.5">次</span>
-        </div>
-      </div>
-      <div class="border-t border-pk-cream-2 px-4 py-3 flex justify-around">
-        <div v-for="s in schools" :key="s" class="flex flex-col items-center gap-1.5">
-          <span class="text-[0.68rem] font-extrabold px-2 py-0.5 rounded-full"
-                :style="{ background: meta[s].bg, color: meta[s].color }">{{ s }}</span>
-          <span class="text-[0.88rem] font-extrabold text-pk-brown">{{ spread(s) }} 次</span>
+          {{ stats.totalEvangelism }}<span class="text-[0.8rem] font-semibold text-pk-brown-2 ml-0.5">次</span>
         </div>
       </div>
     </div>
