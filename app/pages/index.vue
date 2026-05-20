@@ -47,8 +47,10 @@
 
     const L = await import('leaflet')
     const map = L.map(mapRef.value!).setView([25.033, 121.5654], 13)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
     }).addTo(map)
 
     if (!navigator.geolocation) {
@@ -80,7 +82,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 px-4 pt-5 font-pk">
+  <div class="flex flex-col px-4 pt-5 font-pk">
     <!-- 地圖卡片 -->
     <section class="bg-white rounded-pk overflow-hidden shadow-pk-card border border-pk-border">
       <div class="flex items-center justify-between gap-2.5 px-4 py-3.5">
@@ -101,10 +103,15 @@
     </section>
 
     <!-- 部門圖片卡片 -->
-    <section class="">
+    <section class="relative">
+      <div class="wave-animation">
+        <div class="circle-1"></div>
+        <div class="circle-2"></div>
+        <div class="circle-3"></div>
+      </div>
       <!-- 有圖片 -->
       <div v-if="deptImage" class="relative">
-        <img :src="deptImage" :alt="deptLabel" class="w-full h-40 object-cover block" />
+        <img :src="deptImage" :alt="deptLabel" class="w-full h-40 object-cover block dept-image-animation" />
       </div>
 
       <!-- 無圖片 Empty -->
@@ -113,7 +120,7 @@
         <p class="text-[0.85rem] text-pk-brown-light">登入後將顯示您的部門圖片</p>
       </div>
     </section>
-    <p class="text-sm text-center"><span>✨</span> {{ deptLabel }}，出發囉！</p>
+    <p class="text-sm text-pk-green-dark text-center"><span>✨</span> {{ deptLabel }}，出發囉！</p>
   </div>
 </template>
 
@@ -146,7 +153,48 @@
       transform: translateY(0);
     }
     50% {
-      transform: translateY(-7px);
+      transform: translateY(-2px);
+    }
+  }
+
+  .dept-image-animation {
+    animation: float 2s ease-in-out infinite;
+  }
+
+  .wave-animation {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .wave-animation .circle-1,
+  .wave-animation .circle-2,
+  .wave-animation .circle-3 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background: rgba(62, 231, 62, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: wave 5s ease-out infinite;
+  }
+
+  .wave-animation .circle-2 {
+    animation-delay: 1s;
+  }
+
+  .wave-animation .circle-3 {
+    animation-delay: 2s;
+  }
+
+  @keyframes wave {
+    to {
+      transform: translate(-50%, -50%) scale(10);
+      opacity: 0;
     }
   }
 </style>
