@@ -10,8 +10,8 @@ import imgNtu   from '~/assets/images/ntu1.jpg'
 import imgNtnu  from '~/assets/images/ntnu1.jpg'
 import imgNtust from '~/assets/images/ntust1.jpeg'
 
-const PRAY_GOAL = 60
-const SPREAD_GOAL = 3
+const PRAY_GOAL = 30
+const SPREAD_GOAL = 1
 
 const schools = [
   { key: '台大',  label: '台灣大學',    short: 'NTU',   color: '#2E6BE6', bg: '#EAF1FF', bar: 'linear-gradient(90deg,#5B8FF9,#2E6BE6)', image: imgNtu   },

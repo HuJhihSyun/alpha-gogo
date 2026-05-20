@@ -26,7 +26,7 @@ export default defineNuxtConfig({
         { name: 'twitter:description', content: '記錄禱告與傳道足跡，解鎖三所大學明信片！' },
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/alpha-gogo/favicon.ico' },
+        { rel: 'icon', type: 'image/x-icon', href: '/alpha-gogo/favicon.webp' },
       ]
     }
   },
