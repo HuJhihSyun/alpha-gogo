@@ -60,11 +60,11 @@
         header: {
           'X-Member-Id': useLocalStorage('userUuid', '').value
         }
-      }, 
+      },
       body: {
-        campus: activeTab.value, 
-        prayerMinutes: f.prayMinutes ?? 0, 
-        evangelismCount: f.spreadCount ?? 0, 
+        campus: activeTab.value,
+        prayerMinutes: f.prayMinutes ?? 0,
+        evangelismCount: f.spreadCount ?? 0,
         realization: f.reflection
       }
     })
@@ -166,7 +166,7 @@
             </div>
             <div>
               <p class="text-[0.95rem] font-extrabold text-pk-brown">禱告時間</p>
-              <p class="text-[0.75rem] text-pk-brown-2 mt-0.5">今日禱告了多少分鐘？</p>
+              <p class="text-[0.75rem] text-pk-brown-2 mt-0.5">全體 40h | 個人條件 30 分鐘解鎖明信片！</p>
             </div>
           </div>
           <div class="flex items-center gap-2.5">
@@ -209,7 +209,7 @@
             </div>
             <div>
               <p class="text-[0.95rem] font-extrabold text-pk-brown">傳道管理次數</p>
-              <p class="text-[0.75rem] text-pk-brown-2 mt-0.5">今日傳道給管理的次數</p>
+              <p class="text-[0.75rem] text-pk-brown-2 mt-0.5">一次即可解鎖明信片！</p>
             </div>
           </div>
           <div class="flex items-center gap-2.5">
@@ -257,7 +257,7 @@
             v-model="current.reflection"
             rows="4"
             maxlength="500"
-            placeholder="今天有什麼特別的體會或感動呢…"
+            placeholder="記錄在這天做完條件後得到的體會/見證/感動..."
             class="w-full px-2 py-1 rounded-pk-sm border-2 border-pk-border bg-pk-cream text-[0.92rem] text-pk-brown font-pk leading-relaxed resize-none outline-none placeholder:text-pk-brown-light focus:border-pk-green focus:bg-white transition-colors duration-150"
           />
           <p class="text-right text-[0.72rem] text-pk-brown-light -mt-2">{{ current.reflection.length }} / 500</p>

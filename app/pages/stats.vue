@@ -4,7 +4,8 @@ useHead({
   meta: [{ name: 'description', content: '即時查看全體參與者的禱告時間、傳道次數與明信片解鎖進度。' }]
 })
 
-const PRAY_GOAL = 60
+const PRAY_GOAL_MIN = 40 * 60   // 40 小時 = 2400 分鐘
+const PRAY_GOAL_HR  = 40
 
 const { $api } = useNuxtApp()
 
@@ -40,8 +41,9 @@ const prayMap: Record<School, keyof GlobalStats> = {
   台科大: 'ntustTotalPrayer',
 }
 
-const pray = (s: School) => stats.value[prayMap[s]] as number
-const pct  = (s: School) => Math.min(100, Math.round((pray(s) / PRAY_GOAL) * 100))
+const prayMin  = (s: School) => stats.value[prayMap[s]] as number
+const prayHr   = (s: School) => (prayMin(s) / 60).toFixed(1)
+const pct      = (s: School) => Math.min(100, Math.round((prayMin(s) / PRAY_GOAL_MIN) * 100))
 
 const meta: Record<School, { color: string; bg: string; bar: string }> = {
   台大:  { color: '#2E6BE6', bg: '#EAF1FF', bar: 'linear-gradient(90deg,#5B8FF9,#2E6BE6)' },
@@ -85,14 +87,14 @@ const meta: Record<School, { color: string; bg: string; bar: string }> = {
       <div class="flex items-center gap-2">
         <span class="text-[1.1rem]">🙏</span>
         <span class="flex-1 text-[0.95rem] font-extrabold text-pk-brown">各校總禱告時間</span>
-        <span class="text-[0.72rem] font-semibold text-pk-brown-light whitespace-nowrap">目標 {{ PRAY_GOAL }} 分鐘</span>
+        <span class="text-[0.72rem] font-semibold text-pk-brown-light whitespace-nowrap">目標 {{ PRAY_GOAL_HR }} 小時</span>
       </div>
       <div v-for="s in schools" :key="s" class="flex flex-col gap-1.5">
         <div class="flex items-center gap-2">
           <span class="text-[0.72rem] font-extrabold px-2.5 py-0.5 rounded-full flex-shrink-0"
                 :style="{ background: meta[s].bg, color: meta[s].color }">{{ s }}</span>
           <span class="flex-1 text-[0.92rem] font-extrabold text-pk-brown">
-            {{ pray(s) }}<span class="text-[0.72rem] font-medium text-pk-brown-2 ml-0.5">分鐘</span>
+            {{ prayHr(s) }}<span class="text-[0.72rem] font-medium text-pk-brown-2 ml-0.5">小時</span>
           </span>
           <span class="text-[0.72rem] font-bold text-pk-brown-2 min-w-[34px] text-right">{{ pct(s) }}%</span>
         </div>
