@@ -46,12 +46,6 @@
       submitOk.value = false
       return
     }
-    if (!f.reflection.trim()) {
-      submitMsg.value = '請填寫今日體會'
-      submitOk.value = false
-      return
-    }
-
     submitting.value = true
     await new Promise((r) => setTimeout(r, 800))
 
@@ -252,7 +246,7 @@
             </div>
             <div>
               <p class="text-[0.95rem] font-extrabold text-pk-brown">今日體會</p>
-              <p class="text-[0.75rem] text-pk-brown-2 mt-0.5">分享今天的感受與領受</p>
+              <p class="text-[0.75rem] text-pk-brown-2 mt-0.5">分享今天的感受與領受（選填）</p>
             </div>
           </div>
           <textarea
