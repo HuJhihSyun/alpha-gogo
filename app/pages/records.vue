@@ -90,8 +90,8 @@
         return {
           title: '台灣大學 NTU 阿拉法條件登錄',
           history:
-            '歷史足跡：1995.12.3主日，老師在台大分部以大型圖表傳達〈歷史論〉，揭露神的時機，並給予signing「生命救援」。當天台灣會員從50人倍增成250人。',
-          slogan: '2026 阿拉法節，我們也以實踐興起生命救援的神蹟吧!'
+            '歷史足跡：1995.12.10台大迎接到天的足跡，主日禮拜後，老師寫下signing「實踐神蹟」。',
+          slogan: '2026 阿拉法節，我們也以實踐興起生命救援的神蹟吧！'
         }
       case '師大':
         return {
@@ -121,7 +121,7 @@
         <span>📋</span> 活動紀錄
       </span>
       <h1 class="text-[1.7rem] font-black text-pk-brown leading-tight">紀錄</h1>
-      <p class="text-sm text-pk-brown-2">記錄今日的探索與體會</p>
+      <p class="text-sm text-pk-brown-2">記錄今日的傳道或管理次數</p>
     </div>
 
     <!-- 學校標籤 -->
@@ -144,9 +144,11 @@
     </div>
 
     <div class="flex flex-col gap-1">
-      <h4 class="text-base font-bold text-pk-brown">{{ content.title }}</h4>
-      <p class="text-xs font-extrabold text-pk-brown">{{ content.history }}</p>
-      <p class="text-xs font-extrabold text-pk-brown">{{ content.slogan }}</p>
+      <h4 class="text-base font-bold text-pk-green-dark">{{ content.title }}</h4>
+      <div class="py-2 px-3 rounded-md bg-pk-green-light leading-relaxed">
+        <p class="text-xs font-extrabold text-pk-brown">{{ content.history }}</p>
+        <p class="text-xs font-extrabold text-pk-brown mt-1">{{ content.slogan }}</p>
+      </div>
     </div>
 
     <!-- 表單 (key 切換動畫) -->

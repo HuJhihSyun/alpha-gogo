@@ -110,8 +110,8 @@
         <div class="circle-3"></div>
       </div>
       <!-- 有圖片 -->
-      <div v-if="deptImage" class="relative">
-        <img :src="deptImage" :alt="deptLabel" class="w-full h-40 object-cover block dept-image-animation" />
+      <div v-if="deptImage" class="relative flex justify-center items-center">
+        <img :src="deptImage" :alt="deptLabel" class="w-full h-40 block dept-image-animation" :class="deptLabel === '家庭局' || deptLabel === '聖職者' ? 'object-contain' : 'object-cover'" />
       </div>
 
       <!-- 無圖片 Empty -->
